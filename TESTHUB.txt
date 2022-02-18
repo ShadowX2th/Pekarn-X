@@ -1,0 +1,83 @@
+	PlayerName = {}
+	for i,v in pairs(game.Players:GetChildren()) do  
+		table.insert(PlayerName ,v.Name)
+	end
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/NiceBBMBThai12/NBTScript/main/UI-Library-Robloxx"))()
+local window = library:Win()
+local tap1 = window:addtap("HOME")
+local tap2 = window:addtap("Tab2")
+local page1 = tap1:addpage()
+local page2 = tap1:addpage()
+
+
+page1:Ti("Player")
+
+
+SelectedKillPlayer = ""
+
+local Player = page1:DropDown("Selected","Name",PlayerName, function(plys)
+
+		SelectedKillPlayer = plys
+		SelectedPly:Refresh("Selected Player : "..SelectedKillPlayer)   
+end)
+
+page1:Button1("Refresh Player", function(value)
+    		PlayerName = {}
+		Player:Clear()
+		for i,v in pairs(game.Players:GetChildren()) do  
+			Player:Add(v.Name)
+		end
+end)
+
+page1:Toggle("Spectate Player",false, function(bool)
+Sp = bool
+		local plr1 = game.Players.LocalPlayer.Character.Humanoid
+		local plr2 = game.Players:FindFirstChild(SelectedKillPlayer)
+		repeat wait(.1)
+			game.Workspace.Camera.CameraSubject = plr2.Character.Humanoid
+		until Sp == false 
+		game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+	end)
+
+
+page1:Toggle("TELEPORT",nil, function(accv)
+_G.teleportpl = accv
+while _G.teleportpl do wait()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[SelectedKillPlayer].Character.HumanoidRootPart.CFrame
+end
+end)
+
+local getlable = page1:Label("PLAYER")
+
+local getslider = page1:Slder("SPEED",1,100000,8, function(vvv)
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = vvv
+end)
+
+local getslider = page1:Slder("JUMP",1,100000,8, function(bnvv)
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = bnvv
+end)
+page2:Ti("ESP")
+
+local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G-Hub/main/Karrot-Esp"))()
+
+
+local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/1201for/V.G-Hub/main/Karrot-Esp"))()
+
+local Toggle1 = page2:Toggle("Player Esp", nil, function(State)
+ESP:Toggle(State)
+end)
+
+local Toggle1 = page2:Toggle("Tracers Esp", nil, function(State)
+ESP.Tracers = State
+end)
+
+local Toggle1 = page2:Toggle("Name Esp", nil, function(State)
+ESP.Names = State
+end)
+
+local Toggle1 = page2:Toggle("Boxes Esp", nil, function(State)
+ESP.Boxes = State
+end)
+
+
