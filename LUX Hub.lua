@@ -5,8 +5,38 @@ Notification.new("<Color=Blue> Discord <https://discord.gg/TJuFphgp> <Color=/>")
 
 local Plr = game.Players.LocalPlayer
 local Connection = {}
+local Highlight_Folder = Instance.new("Folder")
+Highlight_Folder.Name = "Highlight_Folder"
+Highlight_Folder.Parent = game.CoreGui
+local Highlight = function(Target)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = Target.Name
+    Highlight.FillColor = Color3.fromRGB(255,255,0)
+    Highlight.DepthMode = "AlwaysOnTop"
+    Highlight.FillTransparency = 0.7
+    Highlight.OutlineColor = Color3.fromRGB(255,255,0)
+    Highlight.Parent = Highlight_Folder
+    if Target.Character then
+        Highlight.Adornee = Target.Character
+    end
+    Connection[Target] = Target.CharacterAdded:Connect(function(Characters)
+        Highlight.Adornee = Characters
+    end)
+end
+game.Players.PlayerAdded:Connect(Highlight)
+for i,v in next, game.Players:GetPlayers() do
+    Highlight(v)
+end
+game.Players.PlayerRemoving:Connect(function(PlayerRemove)
+    if Highlight_Folder[PlayerRemove.Name] then
+        Highlight_Folder[PlayerRemove.Name]:Destory()
+    end
+    if Connection[PlayerRemove.Name] then
+        Connection[PlayerRemove.Name]:Disconnect()
+    end
+end)
 
-local Update =  loadstring(game:HttpGet("https://raw.githubusercontent.com/kmmwhocare/Crazzy-Hub-/main/Crazzy%20Hub%20Gui"))()
+local Update =  loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Library = Update:Window("Crazzy Hub","Blox Fruit",Enum.KeyCode.P);
 local User = Library:Tab("User", "rbxassetid:/")
 local Main = Library:Tab("Main","rbxassetid://")
